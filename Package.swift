@@ -17,9 +17,5 @@ let package = Package(
             name: "MultiplatformAnalytics",
             path: "./MultiplatformAnalytics.xcframework"
         ),
-        .binaryTarget(
-            name: "Segment",
-            path: "./Segment.xcframework"
-        ),
     ]
 )
