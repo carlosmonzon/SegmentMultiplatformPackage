@@ -6,9 +6,9 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
-@class SegmentMultiplatformEvent, SEGAnalytics, SegmentMultiplatformConfiguration, SegmentMultiplatformEventAnalyticsCompanion, SegmentMultiplatformIAnalyticsCompanion, SegmentMultiplatformProductProperty, SegmentMultiplatformAddProductEvent, SegmentMultiplatformProperty;
+@class SegmentMultiplatformEvent, SegmentMultiplatformAnalyticsImplCompanion, SegmentMultiplatformAnalyticsImpl, SegmentMultiplatformConfiguration, SEGAnalytics, SegmentMultiplatformSegmentWrapperImplCompanion, SegmentMultiplatformSegmentWrapperImpl, SegmentMultiplatformProductProperty, SegmentMultiplatformAddProductEvent, SegmentMultiplatformProperty;
 
-@protocol SegmentMultiplatformEventAnalytics, SegmentMultiplatformIAnalytics, SegmentMultiplatformIAnalyticsFactory;
+@protocol SegmentMultiplatformAnalytics, SegmentMultiplatformSegmentWrapper, SegmentMultiplatformSegmentWrapperFactory;
 
 NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
@@ -144,61 +144,45 @@ __attribute__((swift_name("KotlinBoolean")))
 + (instancetype)numberWithBool:(BOOL)value;
 @end
 
-__attribute__((swift_name("EventAnalytics")))
-@protocol SegmentMultiplatformEventAnalytics
-@required
-- (void)trackEvent:(SegmentMultiplatformEvent *)event __attribute__((swift_name("track(event:)")));
-@end
-
-__attribute__((swift_name("IAnalytics")))
-@protocol SegmentMultiplatformIAnalytics
-@required
-- (void)aliasUserId:(NSString *)userId options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("alias(userId:options:)")));
-- (void)groupGroupId:(NSString *)groupId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("group(groupId:traits:options:)")));
-- (void)identifyUserId:(NSString *)userId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("identify(userId:traits:options:)")));
-- (void)reset __attribute__((swift_name("reset()")));
-- (void)screenScreenTitle:(NSString *)screenTitle properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("screen(screenTitle:properties:options:)")));
-- (void)trackName:(NSString *)name properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("track(name:properties:options:)")));
-@end
-
-__attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("Analytics")))
-@interface SegmentMultiplatformAnalytics : SegmentMultiplatformBase <SegmentMultiplatformEventAnalytics, SegmentMultiplatformIAnalytics>
-- (instancetype)initWithAnalytics:(id<SegmentMultiplatformIAnalytics>)analytics __attribute__((swift_name("init(analytics:)"))) __attribute__((objc_designated_initializer));
+@protocol SegmentMultiplatformAnalytics
+@required
+- (void)trackEvent:(SegmentMultiplatformEvent *)event __attribute__((swift_name("track(event:)")));
+@end
+
+__attribute__((swift_name("SegmentWrapper")))
+@protocol SegmentMultiplatformSegmentWrapper
+@required
 - (void)aliasUserId:(NSString *)userId options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("alias(userId:options:)")));
 - (void)groupGroupId:(NSString *)groupId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("group(groupId:traits:options:)")));
 - (void)identifyUserId:(NSString *)userId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("identify(userId:traits:options:)")));
 - (void)reset __attribute__((swift_name("reset()")));
 - (void)screenScreenTitle:(NSString *)screenTitle properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("screen(screenTitle:properties:options:)")));
-- (void)trackEvent:(SegmentMultiplatformEvent *)event __attribute__((swift_name("track(event:)")));
 - (void)trackName:(NSString *)name properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("track(name:properties:options:)")));
 @end
 
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("AnalyticsImpl")))
-@interface SegmentMultiplatformAnalyticsImpl : SegmentMultiplatformBase <SegmentMultiplatformIAnalytics>
-- (instancetype)initWithIos:(SEGAnalytics *)ios __attribute__((swift_name("init(ios:)"))) __attribute__((objc_designated_initializer));
+@interface SegmentMultiplatformAnalyticsImpl : SegmentMultiplatformBase <SegmentMultiplatformAnalytics, SegmentMultiplatformSegmentWrapper>
+- (instancetype)initWithSegmentWrapper:(id<SegmentMultiplatformSegmentWrapper>)segmentWrapper __attribute__((swift_name("init(segmentWrapper:)"))) __attribute__((objc_designated_initializer));
+@property (class, readonly, getter=companion) SegmentMultiplatformAnalyticsImplCompanion *companion __attribute__((swift_name("companion")));
 - (void)aliasUserId:(NSString *)userId options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("alias(userId:options:)")));
 - (void)groupGroupId:(NSString *)groupId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("group(groupId:traits:options:)")));
 - (void)identifyUserId:(NSString *)userId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("identify(userId:traits:options:)")));
 - (void)reset __attribute__((swift_name("reset()")));
 - (void)screenScreenTitle:(NSString *)screenTitle properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("screen(screenTitle:properties:options:)")));
+- (void)trackEvent:(SegmentMultiplatformEvent *)event __attribute__((swift_name("track(event:)")));
 - (void)trackName:(NSString *)name properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("track(name:properties:options:)")));
-@property (readonly) SEGAnalytics *ios __attribute__((swift_name("ios")));
-@end
-
-__attribute__((swift_name("IAnalyticsFactory")))
-@protocol SegmentMultiplatformIAnalyticsFactory
-@required
-- (id<SegmentMultiplatformIAnalytics>)createConfiguration:(SegmentMultiplatformConfiguration *)configuration __attribute__((swift_name("create(configuration:)")));
 @end
 
 __attribute__((objc_subclassing_restricted))
-__attribute__((swift_name("AnalyticsImpl.Factory")))
-@interface SegmentMultiplatformAnalyticsImplFactory : SegmentMultiplatformBase <SegmentMultiplatformIAnalyticsFactory>
-- (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
-+ (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
-- (id<SegmentMultiplatformIAnalytics>)createConfiguration:(SegmentMultiplatformConfiguration *)configuration __attribute__((swift_name("create(configuration:)")));
+__attribute__((swift_name("AnalyticsImpl.Companion")))
+@interface SegmentMultiplatformAnalyticsImplCompanion : SegmentMultiplatformBase
++ (instancetype)alloc __attribute__((unavailable));
++ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
++ (instancetype)companion __attribute__((swift_name("init()")));
+@property (class, readonly, getter=shared) SegmentMultiplatformAnalyticsImplCompanion *shared __attribute__((swift_name("shared")));
+- (SegmentMultiplatformAnalyticsImpl *)sharedAnalytics:(id<SegmentMultiplatformSegmentWrapper>)analytics __attribute__((swift_name("shared(analytics:)")));
 @end
 
 __attribute__((objc_subclassing_restricted))
@@ -213,22 +197,42 @@ __attribute__((swift_name("Configuration")))
 @property (readonly) NSString *writeKey __attribute__((swift_name("writeKey")));
 @end
 
-__attribute__((objc_subclassing_restricted))
-__attribute__((swift_name("EventAnalyticsCompanion")))
-@interface SegmentMultiplatformEventAnalyticsCompanion : SegmentMultiplatformBase
-+ (instancetype)alloc __attribute__((unavailable));
-+ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
-+ (instancetype)companion __attribute__((swift_name("init()")));
-@property (class, readonly, getter=shared) SegmentMultiplatformEventAnalyticsCompanion *shared __attribute__((swift_name("shared")));
+__attribute__((swift_name("SegmentWrapperFactory")))
+@protocol SegmentMultiplatformSegmentWrapperFactory
+@required
+- (id<SegmentMultiplatformSegmentWrapper>)createConfiguration:(SegmentMultiplatformConfiguration *)configuration __attribute__((swift_name("create(configuration:)")));
 @end
 
 __attribute__((objc_subclassing_restricted))
-__attribute__((swift_name("IAnalyticsCompanion")))
-@interface SegmentMultiplatformIAnalyticsCompanion : SegmentMultiplatformBase
+__attribute__((swift_name("SegmentWrapperImpl")))
+@interface SegmentMultiplatformSegmentWrapperImpl : SegmentMultiplatformBase <SegmentMultiplatformSegmentWrapper>
+- (instancetype)initWithIos:(SEGAnalytics *)ios __attribute__((swift_name("init(ios:)"))) __attribute__((objc_designated_initializer));
+@property (class, readonly, getter=companion) SegmentMultiplatformSegmentWrapperImplCompanion *companion __attribute__((swift_name("companion")));
+- (void)aliasUserId:(NSString *)userId options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("alias(userId:options:)")));
+- (void)groupGroupId:(NSString *)groupId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("group(groupId:traits:options:)")));
+- (void)identifyUserId:(NSString *)userId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("identify(userId:traits:options:)")));
+- (void)reset __attribute__((swift_name("reset()")));
+- (void)screenScreenTitle:(NSString *)screenTitle properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("screen(screenTitle:properties:options:)")));
+- (void)trackName:(NSString *)name properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("track(name:properties:options:)")));
+@property (readonly) SEGAnalytics *ios __attribute__((swift_name("ios")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("SegmentWrapperImpl.Companion")))
+@interface SegmentMultiplatformSegmentWrapperImplCompanion : SegmentMultiplatformBase
 + (instancetype)alloc __attribute__((unavailable));
 + (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
 + (instancetype)companion __attribute__((swift_name("init()")));
-@property (class, readonly, getter=shared) SegmentMultiplatformIAnalyticsCompanion *shared __attribute__((swift_name("shared")));
+@property (class, readonly, getter=shared) SegmentMultiplatformSegmentWrapperImplCompanion *shared __attribute__((swift_name("shared")));
+- (SegmentMultiplatformSegmentWrapperImpl *)shared __attribute__((swift_name("shared()")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("SegmentWrapperImpl.Factory")))
+@interface SegmentMultiplatformSegmentWrapperImplFactory : SegmentMultiplatformBase <SegmentMultiplatformSegmentWrapperFactory>
+- (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
++ (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
+- (id<SegmentMultiplatformSegmentWrapper>)createConfiguration:(SegmentMultiplatformConfiguration *)configuration __attribute__((swift_name("create(configuration:)")));
 @end
 
 __attribute__((swift_name("Event")))
@@ -273,9 +277,10 @@ __attribute__((swift_name("ProductProperty")))
 @end
 
 __attribute__((objc_subclassing_restricted))
-__attribute__((swift_name("EventAnalyticsKt")))
-@interface SegmentMultiplatformEventAnalyticsKt : SegmentMultiplatformBase
-+ (id<SegmentMultiplatformEventAnalytics>)EventAnalyticsConfiguration:(SegmentMultiplatformConfiguration *)configuration __attribute__((swift_name("EventAnalytics(configuration:)")));
+__attribute__((swift_name("InvokeKt")))
+@interface SegmentMultiplatformInvokeKt : SegmentMultiplatformBase
++ (id<SegmentMultiplatformAnalytics>)Analytics __attribute__((swift_name("Analytics()")));
++ (id<SegmentMultiplatformAnalytics>)AnalyticsConfiguration:(SegmentMultiplatformConfiguration *)configuration __attribute__((swift_name("Analytics(configuration:)")));
 @end
 
 #pragma pop_macro("_Nullable_result")
