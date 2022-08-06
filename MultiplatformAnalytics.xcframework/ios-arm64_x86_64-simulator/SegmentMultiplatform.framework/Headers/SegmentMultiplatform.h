@@ -6,7 +6,9 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
-@class SegmentMultiplatformAnalyticsCompanion, SEGAnalytics, SegmentMultiplatformAnalytics, SegmentMultiplatformConfiguration;
+@class SegmentMultiplatformEvent, SEGAnalytics, SegmentMultiplatformConfiguration, SegmentMultiplatformEventAnalyticsCompanion, SegmentMultiplatformIAnalyticsCompanion, SegmentMultiplatformProductProperty, SegmentMultiplatformAddProductEvent, SegmentMultiplatformProperty;
+
+@protocol SegmentMultiplatformEventAnalytics, SegmentMultiplatformIAnalytics, SegmentMultiplatformIAnalyticsFactory;
 
 NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
@@ -25,22 +27,22 @@ __attribute__((swift_name("KotlinBase")))
 - (instancetype)init __attribute__((unavailable));
 + (instancetype)new __attribute__((unavailable));
 + (void)initialize __attribute__((objc_requires_super));
-@end;
+@end
 
 @interface SegmentMultiplatformBase (SegmentMultiplatformBaseCopying) <NSCopying>
-@end;
+@end
 
 __attribute__((swift_name("KotlinMutableSet")))
 @interface SegmentMultiplatformMutableSet<ObjectType> : NSMutableSet<ObjectType>
-@end;
+@end
 
 __attribute__((swift_name("KotlinMutableDictionary")))
 @interface SegmentMultiplatformMutableDictionary<KeyType, ObjectType> : NSMutableDictionary<KeyType, ObjectType>
-@end;
+@end
 
 @interface NSError (NSErrorSegmentMultiplatformKotlinException)
 @property (readonly) id _Nullable kotlinException;
-@end;
+@end
 
 __attribute__((swift_name("KotlinNumber")))
 @interface SegmentMultiplatformNumber : NSNumber
@@ -74,78 +76,108 @@ __attribute__((swift_name("KotlinNumber")))
 + (instancetype)numberWithBool:(BOOL)value __attribute__((unavailable));
 + (instancetype)numberWithInteger:(NSInteger)value __attribute__((unavailable));
 + (instancetype)numberWithUnsignedInteger:(NSUInteger)value __attribute__((unavailable));
-@end;
+@end
 
 __attribute__((swift_name("KotlinByte")))
 @interface SegmentMultiplatformByte : SegmentMultiplatformNumber
 - (instancetype)initWithChar:(char)value;
 + (instancetype)numberWithChar:(char)value;
-@end;
+@end
 
 __attribute__((swift_name("KotlinUByte")))
 @interface SegmentMultiplatformUByte : SegmentMultiplatformNumber
 - (instancetype)initWithUnsignedChar:(unsigned char)value;
 + (instancetype)numberWithUnsignedChar:(unsigned char)value;
-@end;
+@end
 
 __attribute__((swift_name("KotlinShort")))
 @interface SegmentMultiplatformShort : SegmentMultiplatformNumber
 - (instancetype)initWithShort:(short)value;
 + (instancetype)numberWithShort:(short)value;
-@end;
+@end
 
 __attribute__((swift_name("KotlinUShort")))
 @interface SegmentMultiplatformUShort : SegmentMultiplatformNumber
 - (instancetype)initWithUnsignedShort:(unsigned short)value;
 + (instancetype)numberWithUnsignedShort:(unsigned short)value;
-@end;
+@end
 
 __attribute__((swift_name("KotlinInt")))
 @interface SegmentMultiplatformInt : SegmentMultiplatformNumber
 - (instancetype)initWithInt:(int)value;
 + (instancetype)numberWithInt:(int)value;
-@end;
+@end
 
 __attribute__((swift_name("KotlinUInt")))
 @interface SegmentMultiplatformUInt : SegmentMultiplatformNumber
 - (instancetype)initWithUnsignedInt:(unsigned int)value;
 + (instancetype)numberWithUnsignedInt:(unsigned int)value;
-@end;
+@end
 
 __attribute__((swift_name("KotlinLong")))
 @interface SegmentMultiplatformLong : SegmentMultiplatformNumber
 - (instancetype)initWithLongLong:(long long)value;
 + (instancetype)numberWithLongLong:(long long)value;
-@end;
+@end
 
 __attribute__((swift_name("KotlinULong")))
 @interface SegmentMultiplatformULong : SegmentMultiplatformNumber
 - (instancetype)initWithUnsignedLongLong:(unsigned long long)value;
 + (instancetype)numberWithUnsignedLongLong:(unsigned long long)value;
-@end;
+@end
 
 __attribute__((swift_name("KotlinFloat")))
 @interface SegmentMultiplatformFloat : SegmentMultiplatformNumber
 - (instancetype)initWithFloat:(float)value;
 + (instancetype)numberWithFloat:(float)value;
-@end;
+@end
 
 __attribute__((swift_name("KotlinDouble")))
 @interface SegmentMultiplatformDouble : SegmentMultiplatformNumber
 - (instancetype)initWithDouble:(double)value;
 + (instancetype)numberWithDouble:(double)value;
-@end;
+@end
 
 __attribute__((swift_name("KotlinBoolean")))
 @interface SegmentMultiplatformBoolean : SegmentMultiplatformNumber
 - (instancetype)initWithBool:(BOOL)value;
 + (instancetype)numberWithBool:(BOOL)value;
-@end;
+@end
+
+__attribute__((swift_name("EventAnalytics")))
+@protocol SegmentMultiplatformEventAnalytics
+@required
+- (void)trackEvent:(SegmentMultiplatformEvent *)event __attribute__((swift_name("track(event:)")));
+@end
+
+__attribute__((swift_name("IAnalytics")))
+@protocol SegmentMultiplatformIAnalytics
+@required
+- (void)aliasUserId:(NSString *)userId options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("alias(userId:options:)")));
+- (void)groupGroupId:(NSString *)groupId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("group(groupId:traits:options:)")));
+- (void)identifyUserId:(NSString *)userId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("identify(userId:traits:options:)")));
+- (void)reset __attribute__((swift_name("reset()")));
+- (void)screenScreenTitle:(NSString *)screenTitle properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("screen(screenTitle:properties:options:)")));
+- (void)trackName:(NSString *)name properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("track(name:properties:options:)")));
+@end
 
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("Analytics")))
-@interface SegmentMultiplatformAnalytics : SegmentMultiplatformBase
-@property (class, readonly, getter=companion) SegmentMultiplatformAnalyticsCompanion *companion __attribute__((swift_name("companion")));
+@interface SegmentMultiplatformAnalytics : SegmentMultiplatformBase <SegmentMultiplatformEventAnalytics, SegmentMultiplatformIAnalytics>
+- (instancetype)initWithAnalytics:(id<SegmentMultiplatformIAnalytics>)analytics __attribute__((swift_name("init(analytics:)"))) __attribute__((objc_designated_initializer));
+- (void)aliasUserId:(NSString *)userId options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("alias(userId:options:)")));
+- (void)groupGroupId:(NSString *)groupId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("group(groupId:traits:options:)")));
+- (void)identifyUserId:(NSString *)userId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("identify(userId:traits:options:)")));
+- (void)reset __attribute__((swift_name("reset()")));
+- (void)screenScreenTitle:(NSString *)screenTitle properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("screen(screenTitle:properties:options:)")));
+- (void)trackEvent:(SegmentMultiplatformEvent *)event __attribute__((swift_name("track(event:)")));
+- (void)trackName:(NSString *)name properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("track(name:properties:options:)")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("AnalyticsImpl")))
+@interface SegmentMultiplatformAnalyticsImpl : SegmentMultiplatformBase <SegmentMultiplatformIAnalytics>
+- (instancetype)initWithIos:(SEGAnalytics *)ios __attribute__((swift_name("init(ios:)"))) __attribute__((objc_designated_initializer));
 - (void)aliasUserId:(NSString *)userId options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("alias(userId:options:)")));
 - (void)groupGroupId:(NSString *)groupId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("group(groupId:traits:options:)")));
 - (void)identifyUserId:(NSString *)userId traits:(NSDictionary<id, id> * _Nullable)traits options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("identify(userId:traits:options:)")));
@@ -153,18 +185,21 @@ __attribute__((swift_name("Analytics")))
 - (void)screenScreenTitle:(NSString *)screenTitle properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("screen(screenTitle:properties:options:)")));
 - (void)trackName:(NSString *)name properties:(NSDictionary<id, id> * _Nullable)properties options:(NSDictionary<id, id> * _Nullable)options __attribute__((swift_name("track(name:properties:options:)")));
 @property (readonly) SEGAnalytics *ios __attribute__((swift_name("ios")));
-@end;
+@end
+
+__attribute__((swift_name("IAnalyticsFactory")))
+@protocol SegmentMultiplatformIAnalyticsFactory
+@required
+- (id<SegmentMultiplatformIAnalytics>)createConfiguration:(SegmentMultiplatformConfiguration *)configuration __attribute__((swift_name("create(configuration:)")));
+@end
 
 __attribute__((objc_subclassing_restricted))
-__attribute__((swift_name("Analytics.Companion")))
-@interface SegmentMultiplatformAnalyticsCompanion : SegmentMultiplatformBase
-+ (instancetype)alloc __attribute__((unavailable));
-+ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
-+ (instancetype)companion __attribute__((swift_name("init()")));
-@property (class, readonly, getter=shared) SegmentMultiplatformAnalyticsCompanion *shared __attribute__((swift_name("shared")));
-- (SegmentMultiplatformAnalytics *)setupWithConfigurationConfiguration:(SegmentMultiplatformConfiguration *)configuration __attribute__((swift_name("setupWithConfiguration(configuration:)")));
-- (SegmentMultiplatformAnalytics *)sharedContext:(id _Nullable)context __attribute__((swift_name("shared(context:)")));
-@end;
+__attribute__((swift_name("AnalyticsImpl.Factory")))
+@interface SegmentMultiplatformAnalyticsImplFactory : SegmentMultiplatformBase <SegmentMultiplatformIAnalyticsFactory>
+- (instancetype)init __attribute__((swift_name("init()"))) __attribute__((objc_designated_initializer));
++ (instancetype)new __attribute__((availability(swift, unavailable, message="use object initializers instead")));
+- (id<SegmentMultiplatformIAnalytics>)createConfiguration:(SegmentMultiplatformConfiguration *)configuration __attribute__((swift_name("create(configuration:)")));
+@end
 
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("Configuration")))
@@ -176,13 +211,72 @@ __attribute__((swift_name("Configuration")))
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) NSString *writeKey __attribute__((swift_name("writeKey")));
-@end;
+@end
 
 __attribute__((objc_subclassing_restricted))
-__attribute__((swift_name("PaygroundKt")))
-@interface SegmentMultiplatformPaygroundKt : SegmentMultiplatformBase
-+ (void)test __attribute__((swift_name("test()")));
-@end;
+__attribute__((swift_name("EventAnalyticsCompanion")))
+@interface SegmentMultiplatformEventAnalyticsCompanion : SegmentMultiplatformBase
++ (instancetype)alloc __attribute__((unavailable));
++ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
++ (instancetype)companion __attribute__((swift_name("init()")));
+@property (class, readonly, getter=shared) SegmentMultiplatformEventAnalyticsCompanion *shared __attribute__((swift_name("shared")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("IAnalyticsCompanion")))
+@interface SegmentMultiplatformIAnalyticsCompanion : SegmentMultiplatformBase
++ (instancetype)alloc __attribute__((unavailable));
++ (instancetype)allocWithZone:(struct _NSZone *)zone __attribute__((unavailable));
++ (instancetype)companion __attribute__((swift_name("init()")));
+@property (class, readonly, getter=shared) SegmentMultiplatformIAnalyticsCompanion *shared __attribute__((swift_name("shared")));
+@end
+
+__attribute__((swift_name("Event")))
+@interface SegmentMultiplatformEvent : SegmentMultiplatformBase
+- (NSDictionary<id, id> * _Nullable)toMap __attribute__((swift_name("toMap()")));
+@property (readonly) NSString *name __attribute__((swift_name("name")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("AddProductEvent")))
+@interface SegmentMultiplatformAddProductEvent : SegmentMultiplatformEvent
+- (instancetype)initWithName:(NSString *)name product:(SegmentMultiplatformProductProperty *)product __attribute__((swift_name("init(name:product:)"))) __attribute__((objc_designated_initializer));
+- (NSString *)component1 __attribute__((swift_name("component1()"))) __attribute__((deprecated("use corresponding property instead")));
+- (SegmentMultiplatformProductProperty *)component2 __attribute__((swift_name("component2()"))) __attribute__((deprecated("use corresponding property instead")));
+- (SegmentMultiplatformAddProductEvent *)doCopyName:(NSString *)name product:(SegmentMultiplatformProductProperty *)product __attribute__((swift_name("doCopy(name:product:)")));
+- (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
+- (NSUInteger)hash __attribute__((swift_name("hash()")));
+- (NSDictionary<id, id> * _Nullable)toMap __attribute__((swift_name("toMap()")));
+- (NSString *)description __attribute__((swift_name("description()")));
+@property (readonly) NSString *name __attribute__((swift_name("name")));
+@property (readonly) SegmentMultiplatformProductProperty *product __attribute__((swift_name("product")));
+@end
+
+__attribute__((swift_name("Property")))
+@interface SegmentMultiplatformProperty : SegmentMultiplatformBase
+- (NSDictionary<id, id> * _Nullable)toMap __attribute__((swift_name("toMap()")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("ProductProperty")))
+@interface SegmentMultiplatformProductProperty : SegmentMultiplatformProperty
+- (instancetype)initWithSkuId:(NSString *)skuId price:(double)price __attribute__((swift_name("init(skuId:price:)"))) __attribute__((objc_designated_initializer));
+- (NSString *)component1 __attribute__((swift_name("component1()"))) __attribute__((deprecated("use corresponding property instead")));
+- (double)component2 __attribute__((swift_name("component2()"))) __attribute__((deprecated("use corresponding property instead")));
+- (SegmentMultiplatformProductProperty *)doCopySkuId:(NSString *)skuId price:(double)price __attribute__((swift_name("doCopy(skuId:price:)")));
+- (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
+- (NSUInteger)hash __attribute__((swift_name("hash()")));
+- (NSDictionary<id, id> * _Nullable)toMap __attribute__((swift_name("toMap()")));
+- (NSString *)description __attribute__((swift_name("description()")));
+@property (readonly) double price __attribute__((swift_name("price")));
+@property (readonly) NSString *skuId __attribute__((swift_name("skuId")));
+@end
+
+__attribute__((objc_subclassing_restricted))
+__attribute__((swift_name("EventAnalyticsKt")))
+@interface SegmentMultiplatformEventAnalyticsKt : SegmentMultiplatformBase
++ (id<SegmentMultiplatformEventAnalytics>)EventAnalyticsConfiguration:(SegmentMultiplatformConfiguration *)configuration __attribute__((swift_name("EventAnalytics(configuration:)")));
+@end
 
 #pragma pop_macro("_Nullable_result")
 #pragma clang diagnostic pop

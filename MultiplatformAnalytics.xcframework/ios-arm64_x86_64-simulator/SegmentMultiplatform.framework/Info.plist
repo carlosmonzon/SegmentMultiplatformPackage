@@ -5,7 +5,7 @@
 	<key>CFBundleExecutable</key>
 	<string>SegmentMultiplatform</string>
 	<key>CFBundleIdentifier</key>
-	<string>SegmentMultiplatform</string>
+	<string>com.monzon.analytics.SegmentMultiplatform</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
