@@ -244,10 +244,9 @@ __attribute__((swift_name("Event")))
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("AddProductEvent")))
 @interface SegmentMultiplatformAddProductEvent : SegmentMultiplatformEvent
-- (instancetype)initWithName:(NSString *)name product:(SegmentMultiplatformProductProperty *)product __attribute__((swift_name("init(name:product:)"))) __attribute__((objc_designated_initializer));
-- (NSString *)component1 __attribute__((swift_name("component1()"))) __attribute__((deprecated("use corresponding property instead")));
-- (SegmentMultiplatformProductProperty *)component2 __attribute__((swift_name("component2()"))) __attribute__((deprecated("use corresponding property instead")));
-- (SegmentMultiplatformAddProductEvent *)doCopyName:(NSString *)name product:(SegmentMultiplatformProductProperty *)product __attribute__((swift_name("doCopy(name:product:)")));
+- (instancetype)initWithProduct:(SegmentMultiplatformProductProperty *)product __attribute__((swift_name("init(product:)"))) __attribute__((objc_designated_initializer));
+- (SegmentMultiplatformProductProperty *)component1 __attribute__((swift_name("component1()"))) __attribute__((deprecated("use corresponding property instead")));
+- (SegmentMultiplatformAddProductEvent *)doCopyProduct:(SegmentMultiplatformProductProperty *)product __attribute__((swift_name("doCopy(product:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
 - (NSDictionary<id, id> * _Nullable)toMap __attribute__((swift_name("toMap()")));
